@@ -18,11 +18,10 @@ export const DefaultVideoOptions : VideoOptionsModel = {
   muted: null,
   preload: null,
   poster: ''
-  
-}
+};
 
 
-import { Component, Input, ViewChild, ElementRef, AfterViewInit, OnChanges } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'vida-video-player',
@@ -63,35 +62,34 @@ export class VideoComponent implements AfterViewInit, OnChanges {
   
   constructor( ) {
     console.log('avid video player is working well...');
-    console.log("options",this._options);
+    console.log('options',this._options);
   }
 
-  
   /**
    * Merge options with the default ones
-   * */
+   **/
   mergeOptions() {
-    for ( let key in this.options ) {
-       let value = this.options[key];
-       if (value) {
-        this._options[key] = '';
-       } else {
-         this._options[key] = null;
-       }
+    for (const key in this.options) {
+      if (this.options.hasOwnProperty(key)) {
+        const value = this.options[key];
+        if (value) {
+          this._options[key] = '';
+         } else {
+           this._options[key] = null;
+         }
+      }
     }
-    
     console.log(this._options);
   }
-  
+
   ngOnChanges(change: SimpleChanges) {
-    console.log("change: ",change);
-    
+    console.log('change:' , change);
+
     this.mergeOptions(); // on change merge options again
-  } 
+  }
   ngAfterViewInit() {
     this.mergeOptions();
-    
-    (this.options.playinline === true) ? '' : null;
     console.log(this.vida);
   }
+
 }

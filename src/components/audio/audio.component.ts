@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-player',
-  template: `Video Player is working`
+  selector: 'vida-audio-player',
+  template: `Vida Audio Player is working`
 })
-export class PlayerComponent {
+export class AudioComponent {
   constructor() {
     console.log('My player is working');
   }

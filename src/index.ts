@@ -1,3 +1,3 @@
 // Exports modules here
 
-export * from './components/player.module';
+export * from './components/ng-vida.module';

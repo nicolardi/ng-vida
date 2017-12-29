@@ -9,6 +9,6 @@ node_modules
 build/
 dist/
 
-typings
-
-.vscode
+.vscode/
+.idea/
+.c9/

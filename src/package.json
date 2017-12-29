@@ -1,0 +1,13 @@
+{
+    "name": "ng-vida",
+    "version": "0.0.1",
+    "author": "Giovanni Riga (@39ro), Massimo Nicolardi (@asdraban)",
+    "license": "MIT",
+    "module": "index.js",
+    "keywords": "angular2,angular3,angular4,audio,video",
+    "peerDependecies": {
+        "@angular/core": "^5.1.2",
+        "rxjs": "^5.5.6",
+        "zone.js": "^0.8.19"
+    }
+}

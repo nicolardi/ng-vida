@@ -54,7 +54,7 @@ export class VideoComponent implements AfterViewInit, OnChanges {
   // reference video player
   @ViewChild('vidaRef') vida: ElementRef;
   
-  // Get Options
+  // Get video player's options configuration 
   @Input() options: VideoOptionsModel = {}; // Use these to update options defaults
   
   // The view relies on these options
@@ -82,9 +82,10 @@ export class VideoComponent implements AfterViewInit, OnChanges {
     console.log(this._options);
   }
 
-  ngOnChanges(change: SimpleChanges) {
-    console.log('change:' , change);
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('change:' , changes);
 
+    console.log('asdadsadadda');
     this.mergeOptions(); // on change merge options again
   }
   ngAfterViewInit() {

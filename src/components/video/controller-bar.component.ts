@@ -1,31 +1,18 @@
-import {Component} from '@angular/core';
+import {Component, OnChanges} from '@angular/core';
 import {VideoService} from './video.service';
 
 @Component({
     selector: 'vida-controller-bar',
     template: `
-    paused: {{TESTpausedState}} - muted: {{TESTmutedState}}
-        <div class="vida-control__bar">
-            <button (click)="togglePausedState()"
-                    class="vida-control__button"
-                    [ngClass]="{'vida-control__play': !_video.getPausedState(), 'vida-control__pause': _video.getPausedState()}">
-                X
-            </button>
-            <button (click)="toggleMutedState()">Volume</button>
-        </div>`,
-    styles: [`
-        .vida-control__button {
-            height: 25px;
-            width: 25px;
-        }
-
-        .vida-control__play {
-            background: green;
-        }
-
-        .vida-control__pause {
-            background: red;
-        }
+        <div style="display: flex;">
+            paused: {{TESTpausedState}} - muted: {{TESTmutedState}}
+        </div>
+        <div style="display: flex; flex-direction: row;">
+            <controller-paused></controller-paused>
+            <controller-volume-bar></controller-volume-bar>
+        </div>
+    `,
+    styles: [`        
     `]
 })
 
@@ -36,11 +23,5 @@ export class ControllerBarComponent {
     constructor(private _video: VideoService) {
     }
 
-    togglePausedState() {
-        (this._video.getPausedState()) ? this._video.play() : this._video.pause();
-    }
 
-    toggleMutedState() {
-        (this._video.getMutedState()) ? this._video.unmute() : this._video.mute();
-    }
 }

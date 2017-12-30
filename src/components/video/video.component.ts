@@ -47,6 +47,8 @@ export class VideoComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
+        console.log('video nativeElement', this.video);
+
         this._video.pausedState$
             .subscribe(state => {
                 (state) ? this.video.nativeElement.pause() : this.video.nativeElement.play();

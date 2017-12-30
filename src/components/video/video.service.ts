@@ -19,7 +19,7 @@ export class VideoService {
     }
 
     getMutedState() {
-        return this.pausedState$.getValue();
+        return this.mutedState$.getValue();
     }
 
     mute() {

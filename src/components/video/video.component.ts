@@ -20,7 +20,7 @@ import {VideoService} from './video.service';
 })
 export class VideoComponent implements OnInit, OnChanges {
     // Get the video player Id
-    @Input() id: string;
+    @Input() id: string = 'vida-default';
     // Get the source to reproduce
     @Input() src: string;
     // Get the video type format
@@ -40,10 +40,6 @@ export class VideoComponent implements OnInit, OnChanges {
     constructor(private _video: VideoService) {
         console.log('avid video player is working well...');
         console.log('options', this._options);
-        // if Id is not present assign a default class (vida-default)
-        if (!this.id) {
-            this.id = 'vida-default'
-        }
     }
 
     ngOnInit() {

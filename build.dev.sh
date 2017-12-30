@@ -13,3 +13,10 @@ $ROLLUP -c
 rsync -a --exclude=*.js build/ dist
 
 cp src/package.json dist/package.json
+
+
+cd dist
+npm pack
+
+cd  ../../testproject/
+npm install ../ng-vida/dist/ng-vida-0.0.1.tgz

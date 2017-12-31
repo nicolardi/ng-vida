@@ -1,31 +1,32 @@
+import { ProgressBarComponent } from './components/progressbar.component';
+import { PlayPauseComponent } from './components/play.pause.component';
+import { ButtonEventsService } from './../events/button.events.service';
+import { MediaEventsService } from './../events/media.events.service';
+import { VideoComponent } from './video.component';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
-import {ControllerBarComponent} from './controller-bar.component';
-import {ControllerPausedComponent} from './_controllers/paused.component';
-import {ControllerVolumeBarComponent} from './_controllers/volume-bar.component';
-import {ControllerMutedComponent} from './_controllers/muted.component';
-import {ControllerRestartComponent} from './_controllers/restart.component';
-import {ControllerFullScreen} from './_controllers/fullscreen.component';
+import { ProgressBarEventsService } from 'app/components/events/progress.bar.evens';
 
 @NgModule({
     imports: [CommonModule],
     declarations: [
-        ControllerBarComponent,
-        ControllerPausedComponent,
-        ControllerVolumeBarComponent,
-        ControllerMutedComponent,
-        ControllerRestartComponent,
-        ControllerFullScreen,
+        VideoComponent,
+        PlayPauseComponent,
+        ProgressBarComponent
     ],
     exports: [
-        ControllerBarComponent,
-        ControllerPausedComponent,
-        ControllerVolumeBarComponent,
-        ControllerMutedComponent,
-        ControllerRestartComponent,
-        ControllerFullScreen
+        VideoComponent,
+        PlayPauseComponent,
+        ProgressBarComponent
+    ],
+    providers: [
+        MediaEventsService,
+        ButtonEventsService,
+        ProgressBarEventsService
     ]
+
 })
 export class VideoModule {
+    constructor() {
+    }
 }

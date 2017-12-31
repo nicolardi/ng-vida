@@ -15,7 +15,8 @@ import {VideoComponent} from './video/video.component';
     ],
     exports: [
         AudioComponent,
-        VideoComponent
+        VideoComponent,
+        
     ]
 })
 export class NgVidaModule {

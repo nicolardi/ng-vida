@@ -1,5 +1,38 @@
-import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {DefaultVideoOptions, VideoOptionsModel} from './_model/options.model';
+import { ButtonEventsService } from './../events/button.events.service';
+import { MediaEventsService } from './../events/media.events.service';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    SimpleChanges,
+    ViewChild,
+} from '@angular/core';
+
+
+export interface VideoOptionsModel {
+    playinline?: string;
+    controls?: string;
+    autoplay?: string;
+    buffered?: string;
+    loop?: string;
+    muted?: string;
+    preload?: string;
+}
+
+export const DefaultVideoOptions: VideoOptionsModel = {
+    playinline: '',
+    controls: null,
+    autoplay: null,
+    buffered: null,
+    loop: null,
+    muted: null,
+    preload: null,
+};
+
 
 @Component({
     selector: 'vida-video-player',
@@ -11,10 +44,17 @@ import {DefaultVideoOptions, VideoOptionsModel} from './_model/options.model';
                [attr.loop]="this.options.loop"
                [attr.muted]="this.options.muted"
                [attr.preload]="this.options.preload"
-               [attr.poster]="this.options.poster">
-            <source [src]="src" [type]="type">
+               [attr.poster]="this.options.poster"
+               (play)="onPlay($event)"
+               (end)="onPause($event)"
+               (pause)="onPause($event)"
+               (error)="onError($event)"
+               (loadedmetadata)="onLoadedmetadata($event)"
+
+
+               >
+            <source src="{{src}}" type="{{type}}">
         </video>
-        <vida-controller-bar [videoRef]="videoRef"></vida-controller-bar>
     `,
     styles: [`
         /* Hide controls on full screen */
@@ -24,7 +64,9 @@ import {DefaultVideoOptions, VideoOptionsModel} from './_model/options.model';
 
     `]
 })
-export class VideoComponent implements OnInit, OnChanges {
+export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+    
+
     // Get the video player Id
     @Input() _id: string = 'vida-default';
     // Get the source to reproduce
@@ -40,10 +82,49 @@ export class VideoComponent implements OnInit, OnChanges {
     // Get video player's options configuration
     @Input() options: VideoOptionsModel = {}; // Use these to update options defaults
 
-    constructor() {
-        console.log('avid video player is working well...');
+    constructor(
+        private buttonEvents: ButtonEventsService,
+        private mediaEvents: MediaEventsService) {
     }
 
+    ngAfterViewInit(): void {
+        // Binds the play pressed event
+        this.buttonEvents.play$.subscribe(() => {
+            this.videoRef.nativeElement.play();
+        }); 
+
+        // Binds the pause pressed event
+        this.buttonEvents.pause$.subscribe(() => {
+            this.videoRef.nativeElement.pause();
+        });
+
+    }
+
+
+    onPlay() {
+        console.log('Play event');
+        this.mediaEvents.notifyPlay();
+    }
+    onPause() {
+        console.log('Pause event');
+        this.mediaEvents.notifyPause();
+
+    }
+
+    onError(event) {
+        console.log('error!!');
+        this.mediaEvents.notifyPause();
+    }
+
+    onLoadedmetadata(event) {
+        console.log('Loaded!!');
+
+        this.mediaEvents.notifyDuration(event.target.duration);
+    }
+
+    ngOnDestroy() {
+        this.buttonEvents.play$.unsubscribe();
+    }
     ngOnInit() {
         console.log('video nativeElement', this.videoRef);
     }
@@ -57,12 +138,7 @@ export class VideoComponent implements OnInit, OnChanges {
      * Merge options with the default ones
      **/
     mergeOptions() {
-        for (const key in DefaultVideoOptions) {
-            const optionKeyDefaultValue = DefaultVideoOptions[key];
-            if (!DefaultVideoOptions.hasOwnProperty(key)) {
-                this.options[key] = optionKeyDefaultValue;
-            }
-        }
+        this.options = Object.assign({},DefaultVideoOptions, this.options);
     }
 
 }

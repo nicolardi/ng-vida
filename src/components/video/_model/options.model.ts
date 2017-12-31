@@ -6,10 +6,9 @@ export interface VideoOptionsModel {
     loop?: string;
     muted?: string;
     preload?: string;
-    poster?: string;
 }
 
-export const DefaultVideoOptions : VideoOptionsModel = {
+export const DefaultVideoOptions: VideoOptionsModel = {
     playinline: '',
     controls: null,
     autoplay: null,
@@ -17,5 +16,4 @@ export const DefaultVideoOptions : VideoOptionsModel = {
     loop: null,
     muted: null,
     preload: null,
-    poster: null
 };

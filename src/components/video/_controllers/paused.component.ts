@@ -1,15 +1,13 @@
-import {Component} from '@angular/core';
-import {VideoService} from '../video.service';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
     selector: 'controller-paused',
     template: `
         <button (click)="togglePausedState()"
                 class="vida-control__button"
-                [ngClass]="{'vida-control__play': !_video.getPausedState(), 'vida-control__pause': _video.getPausedState()}">
+                [ngClass]="{'vida-control__play': pausedState === 'play', 'vida-control__pause': pausedState === 'pause'}">
             X
         </button>
-        <br>
     `,
     styles: [`
         .vida-control__button {
@@ -26,12 +24,22 @@ import {VideoService} from '../video.service';
         }
     `]
 })
+
 export class ControllerPausedComponent {
-    constructor(private _video: VideoService) {
-    }
+    @Output() pausedStateUpdated = new EventEmitter();
+    @Input() pausedState: string;
 
     togglePausedState() {
-        (this._video.getPausedState()) ? this._video.play() : this._video.pause();
+        (this.pausedState === 'pause') ? this.play() : this.pause();
     }
 
+    play() {
+        this.pausedState = 'play';
+        this.pausedStateUpdated.emit(this.pausedState);
+    }
+
+    pause() {
+        this.pausedState = 'pause';
+        this.pausedStateUpdated.emit(this.pausedState);
+    }
 }

@@ -1,32 +1,40 @@
-import {Component} from '@angular/core';
-import {VideoService} from '../video.service';
+import {
+    AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2,
+    ViewChild
+} from '@angular/core';
 
 @Component({
     selector: 'controller-volume-bar',
-    template: `        
-        <button (click)="toggleMutedState()">Volume</button>
+    template: `
+        <input #volumeBarRangeRef type="range" step="1" min="0" max="100">
+        {{volumeBarRangeRef.value}}
     `,
     styles: [`
-        .vida-volume__bar {
-            background: bisque;
-            position: relative;
-            height: 100px;
-            width: 10px;
-        }
-
-        .vida-volume__dot {
-            background: green;
-            position: absolute;
-            height: 5px;
-            width: 5px;
-        }
     `]
 })
-export class ControllerVolumeBarComponent {
-    constructor(private _video: VideoService) {
+export class ControllerVolumeBarComponent implements OnInit, AfterViewInit {
+    @ViewChild('volumeBarRangeRef') volumeBarRange: ElementRef;
+
+    @Input() volumeLevel: number;
+    @Output() volumeLevelUpdated = new EventEmitter<number>();
+
+    constructor(private renderer: Renderer2) {
     }
 
-    toggleMutedState() {
-        (this._video.getMutedState()) ? this._video.unmute() : this._video.mute();
+    ngOnInit() {
+        // assign initial volume level
+        this.volumeBarRange.nativeElement.value = this.volumeLevel * 100;
+    }
+
+    ngAfterViewInit() {
+        // listener to get the volume change
+        this.renderer.listen(this.volumeBarRange.nativeElement, 'change',
+            () => {
+                this.volumeLevelUpdated.emit(this.getVolumeLevel());
+            });
+    }
+
+    getVolumeLevel() {
+        return this.volumeBarRange.nativeElement.value / 100;
     }
 }

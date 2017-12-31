@@ -13,7 +13,7 @@ import {
     `]
 })
 export class ControllerVolumeBarComponent implements OnInit, AfterViewInit {
-    @ViewChild('volumeBarRangeRef') volumeBarRange: ElementRef;
+    @ViewChild('volumeBarRangeRef') volumeBarRangeRef: ElementRef;
 
     @Input() volumeLevel: number;
     @Output() volumeLevelUpdated = new EventEmitter<number>();
@@ -23,18 +23,18 @@ export class ControllerVolumeBarComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         // assign initial volume level
-        this.volumeBarRange.nativeElement.value = this.volumeLevel * 100;
+        this.volumeBarRangeRef.nativeElement.value = this.volumeLevel * 100;
     }
 
     ngAfterViewInit() {
         // listener to get the volume change
-        this.renderer.listen(this.volumeBarRange.nativeElement, 'change',
+        this.renderer.listen(this.volumeBarRangeRef.nativeElement, 'change',
             () => {
                 this.volumeLevelUpdated.emit(this.getVolumeLevel());
             });
     }
 
     getVolumeLevel() {
-        return this.volumeBarRange.nativeElement.value / 100;
+        return this.volumeBarRangeRef.nativeElement.value / 100;
     }
 }

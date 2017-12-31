@@ -14,11 +14,10 @@ import {DefaultVideoOptions, VideoOptionsModel} from './_model/options.model';
                [attr.poster]="this.options.poster">
             <source [src]="src" [type]="type">
         </video>
-        <vida-controller-bar
-                [videoRef]="video"></vida-controller-bar>
+        <vida-controller-bar [videoRef]="videoRef"></vida-controller-bar>
     `,
     styles: [`
-        /* Hide controls on full screen*/
+        /* Hide controls on full screen */
         video::-webkit-media-controls {
             display: none;
         }
@@ -36,7 +35,7 @@ export class VideoComponent implements OnInit, OnChanges {
     @Input() poster: string;
 
     // reference video player
-    @ViewChild('videoRef') video: ElementRef;
+    @ViewChild('videoRef') videoRef: ElementRef;
 
     // Get video player's options configuration
     @Input() options: VideoOptionsModel = {}; // Use these to update options defaults
@@ -46,7 +45,7 @@ export class VideoComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        console.log('video nativeElement', this.video);
+        console.log('video nativeElement', this.videoRef);
     }
 
     ngOnChanges(changes: SimpleChanges) {

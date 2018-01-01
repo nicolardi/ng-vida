@@ -7,6 +7,7 @@ import {MediaEventsService} from '../../events/media.events.service';
     template: `
         <input type="range" class="progress-bar"
                (input)="change($event)"
+               [value]='currentTime'
                max="{{max}}">
     `
 })
@@ -14,12 +15,20 @@ import {MediaEventsService} from '../../events/media.events.service';
 export class ProgressBarComponent implements OnInit, OnDestroy {
     @Input() max: number = 100;
 
+    currentTime: number;
     constructor(private mediaEvents: MediaEventsService) {
         mediaEvents.duration$.subscribe((duration: number) => {
 
             this.max = duration;
         });
+
+        mediaEvents.progress$.subscribe(( currentTime ) => {
+            this.currentTime = currentTime;
+            console.log(currentTime);
+        } );
     }
+
+
 
     ngOnDestroy() {
         this.mediaEvents.duration$.unsubscribe();

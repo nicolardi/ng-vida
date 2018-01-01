@@ -4,7 +4,7 @@
       "skipTemplateCodegen": true,
       "flatModuleOutFile": "core.js",
       "flatModuleId": "core",
-      "annotateForClosureCompiler": true,
+      "annotateForClosureCompiler": true
   },
   "compilerOptions": {
     "target": "es2015",

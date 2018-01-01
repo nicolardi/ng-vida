@@ -19,4 +19,5 @@ cd dist
 npm pack
 
 cd  ../../testproject/
+npm remove ng-vida
 npm install ../ng-vida/dist/ng-vida-0.0.1.tgz

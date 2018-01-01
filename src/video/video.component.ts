@@ -28,6 +28,7 @@ import {DefaultVideoOptions, VideoOptionsModel} from './_model/options.model';
                (end)="onPause($event)"
                (pause)="onPause($event)"
                (error)="onError($event)"
+               (progress)="onProgress($event)"
                (loadedmetadata)="onLoadedmetadata($event)">
             <source [src]="src" [type]="type">
         </video>
@@ -100,6 +101,10 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     onError(event: any) {
         console.log('error!!');
         this.mediaEvents.notifyPause();
+    }
+
+    onProgress(event) {
+        this.mediaEvents.notifyProgress(event.currentTime);
     }
 
     onLoadedmetadata(event: any) {

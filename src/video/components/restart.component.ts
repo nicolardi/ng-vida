@@ -1,14 +1,17 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component} from '@angular/core';
+import {RestartEventsService} from '../../events/restart.events.service';
 
 @Component({
-    selector: 'controller-restart',
-    template: `<button (click)="restartVideo()">restart</button>`,
+    selector: 'vida-restart',
+    template: `
+        <button (click)="resetCurrentTime()">restart</button>`,
     styles: [``]
 })
-export class ControllerRestartComponent {
-    @Output() restart = new EventEmitter<boolean>();
+export class RestartComponent {
+    constructor(private restartEvents: RestartEventsService) {
+    }
 
-    restartVideo() {
-        this.restart.emit(true);
+    resetCurrentTime() {
+        this.restartEvents.resetCurrentTime();
     }
 }

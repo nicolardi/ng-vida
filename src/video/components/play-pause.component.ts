@@ -1,16 +1,16 @@
-import { MediaEventsService } from './../../events/media.events.service';
-import { ButtonEventsService } from './../../events/button.events.service';
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component} from '@angular/core';
+import {ButtonEventsService} from '../../events/button.events.service';
+import {MediaEventsService} from '../../events/media.events.service';
 
 @Component({
     selector: 'vida-play-pause-button',
     template: `
         <button *ngIf="state === 'pause'" (click)="toggle()">
-           play
+            play
         </button>
 
         <button *ngIf="state === 'play'" (click)="toggle()">
-           pause
+            pause
         </button>
     `,
     styles: [`
@@ -18,10 +18,10 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 
 export class PlayPauseComponent {
-
     state = 'pause';
+
     constructor(private buttonEvents: ButtonEventsService, private mediaEvents: MediaEventsService) {
-        mediaEvents.play$.subscribe( () => {
+        mediaEvents.play$.subscribe(() => {
             this.state = 'play';
         });
 
@@ -31,12 +31,6 @@ export class PlayPauseComponent {
     }
 
     toggle() {
-        if (this.state === 'pause') {
-           this.buttonEvents.notifyPlay();
-        }
-
-        if (this.state === 'play') {
-            this.buttonEvents.notifyPause();
-         }
+        (this.state === 'pause') ? this.buttonEvents.notifyPlay() : this.buttonEvents.notifyPause();
     }
 }

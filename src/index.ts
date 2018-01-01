@@ -1,3 +1,3 @@
 // Exports modules here
 
-export * from './components/ng-vida.module';
+export * from './video/video.module';

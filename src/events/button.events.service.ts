@@ -1,6 +1,5 @@
-import { Subject } from 'rxjs/Subject';
-
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs/Subject';
 
 @Injectable()
 export class ButtonEventsService {
@@ -8,10 +7,10 @@ export class ButtonEventsService {
     play$ = new Subject();
     pause$ = new Subject();
 
-    constructor() { }
+    constructor() {
+    }
 
-    notifyPlay()
-    {
+    notifyPlay() {
         this.play$.next();
     }
 

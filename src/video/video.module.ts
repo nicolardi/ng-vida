@@ -1,11 +1,14 @@
-import { ProgressBarComponent } from './components/progressbar.component';
-import { PlayPauseComponent } from './components/play.pause.component';
-import { ButtonEventsService } from './../events/button.events.service';
-import { MediaEventsService } from './../events/media.events.service';
-import { VideoComponent } from './video.component';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import { ProgressBarEventsService } from 'app/components/events/progress.bar.evens';
+import {VideoComponent} from './video.component';
+
+import {ProgressBarComponent} from './components/progressbar.component';
+import {PlayPauseComponent} from './components/play-pause.component';
+
+import {MediaEventsService} from '../events/media.events.service';
+import {ButtonEventsService} from '../events/button.events.service';
+import {ProgressBarEventsService} from '../events/progress.bar.evens';
+
 
 @NgModule({
     imports: [CommonModule],
@@ -26,6 +29,7 @@ import { ProgressBarEventsService } from 'app/components/events/progress.bar.eve
     ]
 
 })
+
 export class VideoModule {
     constructor() {
     }

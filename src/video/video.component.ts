@@ -1,5 +1,3 @@
-import { ButtonEventsService } from './../events/button.events.service';
-import { MediaEventsService } from './../events/media.events.service';
 import {
     AfterViewInit,
     Component,
@@ -11,28 +9,9 @@ import {
     SimpleChanges,
     ViewChild,
 } from '@angular/core';
-
-
-export interface VideoOptionsModel {
-    playinline?: string;
-    controls?: string;
-    autoplay?: string;
-    buffered?: string;
-    loop?: string;
-    muted?: string;
-    preload?: string;
-}
-
-export const DefaultVideoOptions: VideoOptionsModel = {
-    playinline: '',
-    controls: null,
-    autoplay: null,
-    buffered: null,
-    loop: null,
-    muted: null,
-    preload: null,
-};
-
+import {ButtonEventsService} from '../events/button.events.service';
+import {MediaEventsService} from '../events/media.events.service';
+import {DefaultVideoOptions, VideoOptionsModel} from './_model/options.model';
 
 @Component({
     selector: 'vida-video-player',
@@ -49,11 +28,8 @@ export const DefaultVideoOptions: VideoOptionsModel = {
                (end)="onPause($event)"
                (pause)="onPause($event)"
                (error)="onError($event)"
-               (loadedmetadata)="onLoadedmetadata($event)"
-
-
-               >
-            <source src="{{src}}" type="{{type}}">
+               (loadedmetadata)="onLoadedmetadata($event)">
+            <source [src]="src" [type]="type">
         </video>
     `,
     styles: [`
@@ -65,8 +41,6 @@ export const DefaultVideoOptions: VideoOptionsModel = {
     `]
 })
 export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-    
-
     // Get the video player Id
     @Input() _id: string = 'vida-default';
     // Get the source to reproduce
@@ -82,16 +56,28 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     // Get video player's options configuration
     @Input() options: VideoOptionsModel = {}; // Use these to update options defaults
 
-    constructor(
-        private buttonEvents: ButtonEventsService,
-        private mediaEvents: MediaEventsService) {
+    constructor(private buttonEvents: ButtonEventsService,
+                private mediaEvents: MediaEventsService) {
+    }
+
+    ngOnInit() {
+        console.log('video nativeElement', this.videoRef);
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        console.log('changes:', changes);
+        this.mergeOptions();
+    }
+
+    ngOnDestroy() {
+        this.buttonEvents.play$.unsubscribe();
     }
 
     ngAfterViewInit(): void {
         // Binds the play pressed event
         this.buttonEvents.play$.subscribe(() => {
             this.videoRef.nativeElement.play();
-        }); 
+        });
 
         // Binds the pause pressed event
         this.buttonEvents.pause$.subscribe(() => {
@@ -105,40 +91,28 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
         console.log('Play event');
         this.mediaEvents.notifyPlay();
     }
+
     onPause() {
         console.log('Pause event');
         this.mediaEvents.notifyPause();
-
     }
 
-    onError(event) {
+    onError(event: any) {
         console.log('error!!');
         this.mediaEvents.notifyPause();
     }
 
-    onLoadedmetadata(event) {
+    onLoadedmetadata(event: any) {
         console.log('Loaded!!');
-
         this.mediaEvents.notifyDuration(event.target.duration);
     }
 
-    ngOnDestroy() {
-        this.buttonEvents.play$.unsubscribe();
-    }
-    ngOnInit() {
-        console.log('video nativeElement', this.videoRef);
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-        console.log('changes:', changes);
-        this.mergeOptions();
-    }
 
     /**
      * Merge options with the default ones
      **/
     mergeOptions() {
-        this.options = Object.assign({},DefaultVideoOptions, this.options);
+        this.options = Object.assign({}, DefaultVideoOptions, this.options);
     }
 
 }

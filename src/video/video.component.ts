@@ -12,6 +12,7 @@ import {
 import {ButtonEventsService} from '../events/button.events.service';
 import {MediaEventsService} from '../events/media.events.service';
 import {DefaultVideoOptions, VideoOptionsModel} from './_model/options.model';
+import {FullScreenEventsService} from '../events/fullscreen.events.service';
 
 @Component({
     selector: 'vida-video-player',
@@ -57,7 +58,8 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     @Input() options: VideoOptionsModel = {}; // Use these to update options defaults
 
     constructor(private buttonEvents: ButtonEventsService,
-                private mediaEvents: MediaEventsService) {
+                private mediaEvents: MediaEventsService,
+                private fullScreenEvents: FullScreenEventsService) {
     }
 
     ngOnInit() {
@@ -84,6 +86,15 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
             this.videoRef.nativeElement.pause();
         });
 
+        // Binds the fullScreen
+        this.fullScreenEvents.fullScreen$.subscribe(() => {
+            let elem = this.videoRef.nativeElement as HTMLVideoElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            }
+        })
     }
 
 

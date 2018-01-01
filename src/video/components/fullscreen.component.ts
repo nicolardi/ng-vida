@@ -1,17 +1,23 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component} from '@angular/core';
+import {FullScreenEventsService} from '../../events/fullscreen.events.service';
 
 @Component({
-    selector: 'controller-fullscreen',
+    selector: 'vida-fullscreen',
     template: `
-        <button (click)="toggleFullScreen()" class="fullscreen">FScreen</button>
+        <button (click)="enterFullScreen()"
+                class="fullscreen">FScreen
+        </button>
     `,
     styles: [``]
 })
-export class ControllerFullScreen {
-    @Output() fullScreen = new EventEmitter<boolean>();
+export class FullScreenComponent {
+    state = false;
 
-    toggleFullScreen() {
-        this.fullScreen.emit();
+    constructor(private fullScreenEvents: FullScreenEventsService) {
+
     }
 
+    enterFullScreen() {
+        this.fullScreenEvents.enterFullScreen();
+    }
 }

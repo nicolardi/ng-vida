@@ -8,6 +8,8 @@ import {PlayPauseComponent} from './components/play-pause.component';
 import {MediaEventsService} from '../events/media.events.service';
 import {ButtonEventsService} from '../events/button.events.service';
 import {ProgressBarEventsService} from '../events/progress.bar.evens';
+import {FullScreenEventsService} from '../events/fullscreen.events.service';
+import {FullScreenComponent} from './components/fullscreen.component';
 
 
 @NgModule({
@@ -15,17 +17,20 @@ import {ProgressBarEventsService} from '../events/progress.bar.evens';
     declarations: [
         VideoComponent,
         PlayPauseComponent,
-        ProgressBarComponent
+        ProgressBarComponent,
+        FullScreenComponent
     ],
     exports: [
         VideoComponent,
         PlayPauseComponent,
-        ProgressBarComponent
+        ProgressBarComponent,
+        FullScreenComponent
     ],
     providers: [
         MediaEventsService,
         ButtonEventsService,
-        ProgressBarEventsService
+        ProgressBarEventsService,
+        FullScreenEventsService
     ]
 
 })

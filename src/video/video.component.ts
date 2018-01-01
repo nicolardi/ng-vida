@@ -14,6 +14,7 @@ import {MediaEventsService} from '../events/media.events.service';
 import {DefaultVideoOptions, VideoOptionsModel} from './_model/options.model';
 import {FullScreenEventsService} from '../events/fullscreen.events.service';
 import {RestartEventsService} from '../events/restart.events.service';
+import { ProgressBarEventsService } from '../events/progress.bar.events';
 
 @Component({
     selector: 'vida-video-player',
@@ -30,7 +31,7 @@ import {RestartEventsService} from '../events/restart.events.service';
                (end)="onPause($event)"
                (pause)="onPause($event)"
                (error)="onError($event)"
-               (progress)="onProgress($event)"
+               (timeupdate)="onTimeUpdate($event)"
                (loadedmetadata)="onLoadedmetadata($event)">
             <source [src]="src" [type]="type">
         </video>
@@ -62,7 +63,10 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     constructor(private buttonEvents: ButtonEventsService,
                 private mediaEvents: MediaEventsService,
                 private fullScreenEvents: FullScreenEventsService,
-                private restartEvents: RestartEventsService) {
+                private restartEvents: RestartEventsService,
+                private progressBarEvents: ProgressBarEventsService
+            ) {
+                console.log("ZIO KAN");
     }
 
     ngOnInit() {
@@ -76,6 +80,10 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
 
     ngOnDestroy() {
         this.buttonEvents.play$.unsubscribe();
+        this.buttonEvents.pause$.unsubscribe();
+        this.progressBarEvents.seek$.unsubscribe();
+        this.fullScreenEvents.fullScreen$.unsubscribe();
+        this.restartEvents.restart$.unsubscribe();
     }
 
     ngAfterViewInit(): void {
@@ -88,6 +96,12 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
         this.buttonEvents.pause$.subscribe(() => {
             this.videoRef.nativeElement.pause();
         });
+
+        // Binds the pause pressed event
+        this.progressBarEvents.seek$.subscribe((time) => {
+            this.videoRef.nativeElement.currentTime =  time;
+        });
+
 
         // enter fullScreen
         this.fullScreenEvents.fullScreen$.subscribe(() => {
@@ -121,8 +135,9 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
         this.mediaEvents.notifyPause();
     }
 
-    onProgress(event) {
-        this.mediaEvents.notifyProgress(event.currentTime);
+    onTimeUpdate(event: any) {
+       // console.log(event);
+        this.mediaEvents.notifyTimeUpdate(event.target.currentTime);
     }
 
     onLoadedmetadata(event: any) {

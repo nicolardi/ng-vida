@@ -7,7 +7,7 @@ export class MediaEventsService {
     play$ = new Subject();
     pause$ = new Subject();
     duration$ = new Subject();
-    progress$ = new Subject<number>();
+    timeUpdate$ = new Subject<number>();
 
     constructor() { }
 
@@ -23,8 +23,8 @@ export class MediaEventsService {
        this.duration$.next(duration);
     }
 
-    notifyProgress(currentTime: number) {
-        this.progress$.next(currentTime);
+    notifyTimeUpdate(currentTime: number) {
+        this.timeUpdate$.next(currentTime);
     }
 
 }

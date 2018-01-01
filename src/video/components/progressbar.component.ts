@@ -1,6 +1,7 @@
-
+import { ProgressBarEventsService } from './../../events/progress.bar.events';
+import { MediaEventsService } from './../../events/media.events.service';
 import {Component, OnInit, Input, OnDestroy} from '@angular/core';
-import {MediaEventsService} from '../../events/media.events.service';
+
 
 @Component({
     selector: 'vida-progress-bar',
@@ -8,23 +9,25 @@ import {MediaEventsService} from '../../events/media.events.service';
         <input type="range" class="progress-bar"
                (input)="change($event)"
                [value]='currentTime'
-               max="{{max}}">
+               max="{{max}}"
+               min="0"
+               >
     `
 })
 
 export class ProgressBarComponent implements OnInit, OnDestroy {
     @Input() max: number = 100;
-
-    currentTime: number;
-    constructor(private mediaEvents: MediaEventsService) {
+   
+    currentTime: number = 0;
+    constructor(private mediaEvents: MediaEventsService, private progressBarEvents: ProgressBarEventsService) {
         mediaEvents.duration$.subscribe((duration: number) => {
 
             this.max = duration;
         });
 
-        mediaEvents.progress$.subscribe(( currentTime ) => {
+        mediaEvents.timeUpdate$.subscribe(( currentTime ) => {
+            //console.log("current time sent by video",currentTime);
             this.currentTime = currentTime;
-            console.log(currentTime);
         } );
     }
 
@@ -36,7 +39,7 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
 
 
     change(event: any) {
-        console.log("change: ", event.target.value);
+        this.progressBarEvents.seek(event.target.value);
     }
 
     ngOnInit() {

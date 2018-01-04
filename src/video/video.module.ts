@@ -12,6 +12,8 @@ import {FullScreenEventsService} from '../events/fullscreen.events.service';
 import {FullScreenComponent} from './components/fullscreen.component';
 import {RestartEventsService} from '../events/restart.events.service';
 import {RestartComponent} from './components/restart.component';
+import {VolumeBarEventsService} from '../events/volume-bar.events.service';
+import {VolumeBarComponent} from './components/volume-bar.component';
 
 
 @NgModule({
@@ -21,14 +23,16 @@ import {RestartComponent} from './components/restart.component';
         PlayPauseComponent,
         ProgressBarComponent,
         FullScreenComponent,
-        RestartComponent
+        RestartComponent,
+        VolumeBarComponent
     ],
     exports: [
         VideoComponent,
         PlayPauseComponent,
         ProgressBarComponent,
         FullScreenComponent,
-        RestartComponent
+        RestartComponent,
+        VolumeBarComponent
     ],
     providers: [
         MediaEventsService,
@@ -36,6 +40,7 @@ import {RestartComponent} from './components/restart.component';
         ProgressBarEventsService,
         FullScreenEventsService,
         RestartEventsService,
+        VolumeBarEventsService
     ]
 
 })

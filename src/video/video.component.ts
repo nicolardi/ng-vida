@@ -14,6 +14,7 @@ import {MediaEventsService} from '../events/media.events.service';
 import {DefaultVideoOptions, VideoOptionsModel} from './_model/options.model';
 import {FullScreenEventsService} from '../events/fullscreen.events.service';
 import {RestartEventsService} from '../events/restart.events.service';
+import {VolumeBarEventsService} from '../events/volume-bar.events.service';
 
 @Component({
     selector: 'vida-video-player',
@@ -61,7 +62,8 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     constructor(private buttonEvents: ButtonEventsService,
                 private mediaEvents: MediaEventsService,
                 private fullScreenEvents: FullScreenEventsService,
-                private restartEvents: RestartEventsService) {
+                private restartEvents: RestartEventsService,
+                private volumeBarEvents: VolumeBarEventsService) {
     }
 
     ngOnInit() {
@@ -102,6 +104,17 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
         this.restartEvents.restart$.subscribe(() => {
             this.videoRef.nativeElement.currentTime = 0;
         });
+
+        // update Volume
+        this.volumeBarEvents.volumeLevel$.subscribe((volume: number) => {
+            this.videoRef.nativeElement.volume = volume;
+        });
+
+        // muted
+        this.volumeBarEvents.muted$.subscribe(() => {
+            (this.videoRef.nativeElement.muted === true) ? this.videoRef.nativeElement.muted = false : this.videoRef.nativeElement.muted = true;
+        })
+
     }
 
 

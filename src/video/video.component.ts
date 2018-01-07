@@ -15,7 +15,7 @@ import {DefaultVideoOptions, VideoOptionsModel} from './_model/options.model';
 import {FullScreenEventsService} from '../events/fullscreen.events.service';
 import {RestartEventsService} from '../events/restart.events.service';
 import {VolumeBarEventsService} from '../events/volume-bar.events.service';
-import { ProgressBarEventsService } from '../events/progress.bar.events';
+import {ProgressBarEventsService} from '../events/progress-bar.events.service';
 
 @Component({
     selector: 'vida-video-player',
@@ -99,7 +99,7 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
 
         // Binds the pause pressed event
         this.progressBarEvents.seek$.subscribe((time) => {
-            this.videoRef.nativeElement.currentTime =  time;
+            this.videoRef.nativeElement.currentTime = time;
         });
 
 
@@ -147,7 +147,7 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     }
 
     onTimeUpdate(event: any) {
-       // console.log(event);
+        // console.log(event);
         this.mediaEvents.notifyTimeUpdate(event.target.currentTime);
     }
 

@@ -3,7 +3,6 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class MediaEventsService {
-
     play$ = new Subject();
     pause$ = new Subject();
     duration$ = new Subject();

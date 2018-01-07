@@ -1,6 +1,6 @@
 # Clean up previous distributions 
-#rm -rf dist
-#rm -rf build
+rm -rf dist
+rm -rf build
 
 # Variable pointing to NGC
 NGC="node node_modules/.bin/ngc"

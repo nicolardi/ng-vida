@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ButtonEventsService} from '../../events/button.events.service';
 import {MediaEventsService} from '../../events/media.events.service';
+import {NgVidaApiService} from '../../events/ng-vida.api.service';
 
 @Component({
     selector: 'vida-play-pause-button',
@@ -17,20 +18,27 @@ import {MediaEventsService} from '../../events/media.events.service';
     `]
 })
 
-export class PlayPauseComponent {
+export class PlayPauseComponent implements OnInit {
+    @Input() group: string;     // Get Identifier group
     state = 'pause';
 
-    constructor(private buttonEvents: ButtonEventsService, private mediaEvents: MediaEventsService) {
-        mediaEvents.play$.subscribe(() => {
-            this.state = 'play';
-        });
+    constructor(private _ngVidaApi: NgVidaApiService,
+                private buttonEvents: ButtonEventsService) {
+    }
 
-        mediaEvents.pause$.subscribe(() => {
-            this.state = 'pause';
-        });
+    ngOnInit() {
+        this._ngVidaApi.subjects[this.group].onPlay$
+            .subscribe(() => {
+                this.state = 'play';
+            });
+
+        this._ngVidaApi.subjects[this.group].onPause$
+            .subscribe(() => {
+                this.state = 'pause';
+            });
     }
 
     toggle() {
-        (this.state === 'pause') ? this.buttonEvents.notifyPlay() : this.buttonEvents.notifyPause();
+        (this.state === 'pause') ? this.buttonEvents.notifyPlay(this.group) : this.buttonEvents.notifyPause(this.group);
     }
 }

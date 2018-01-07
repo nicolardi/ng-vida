@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
+import {NgVidaApiService} from './ng-vida.api.service';
 
 @Injectable()
 export class RestartEventsService {
-    restart$ = new Subject();
 
-    resetCurrentTime() {
-        this.restart$.next();
+    constructor(private _ngVidaApi: NgVidaApiService) {
     }
+
+    resetCurrentTime(group: string) {
+        return this._ngVidaApi.getGroup(group).restart$.next();
+        }
 }

@@ -1,16 +1,16 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
+import {NgVidaApiService} from './ng-vida.api.service';
 
 @Injectable()
 export class VolumeBarEventsService {
-    volumeLevel$ = new Subject();
-    muted$ = new Subject();
-
-    updateVolumeLevel(volume: number) {
-        this.volumeLevel$.next(volume);
+    constructor(private _ngVidaApi: NgVidaApiService) {
     }
 
-    toggleMuted() {
-        this.muted$.next();
+    updateVolumeLevel(group: string, volume: number) {
+        return this._ngVidaApi.getGroup(group).volumeLevel$.next(volume);
+    }
+
+    toggleMuted(group: string) {
+        return this._ngVidaApi.getGroup(group).muted$.next();
     }
 }

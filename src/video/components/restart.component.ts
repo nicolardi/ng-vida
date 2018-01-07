@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {RestartEventsService} from '../../events/restart.events.service';
 
 @Component({
@@ -8,10 +8,11 @@ import {RestartEventsService} from '../../events/restart.events.service';
     styles: [``]
 })
 export class RestartComponent {
+    @Input() group: string;     // Get Identifier group
     constructor(private restartEvents: RestartEventsService) {
     }
 
     resetCurrentTime() {
-        this.restartEvents.resetCurrentTime();
+        this.restartEvents.resetCurrentTime(this.group);
     }
 }

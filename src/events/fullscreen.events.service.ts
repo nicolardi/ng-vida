@@ -1,37 +1,13 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
+import {NgVidaApiService} from './ng-vida.api.service';
 
 @Injectable()
 export class FullScreenEventsService {
 
-    subjects = {};
-    
-    enterFullscreen(group: string) {
-        this.getSubject(group).fullscreen.next();
+    constructor(private _ngVidaApi: NgVidaApiService) {
     }
 
-      /** private methods */
-      private getSubject(group: string)
-      {
-          if (this.hasSubject(group)) {
-              return this.subjects[group];
-          } else 
-          {
-              this.subjects[group] = this.createSubjects(group); 
-          }
-      }
-  
-      private createSubjects(group: string)
-      {
-          return {
-              fullscreen: new Subject(),
-          };
-      } 
-  
-      private hasSubject(group: string)
-      {
-          return this.subjects[group]?true:false;
-      }
-      
-
+    enterFullScreen(group: string) {
+        this._ngVidaApi.getGroup(group).fullscreen$.next();
+    }
 }

@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {VolumeBarEventsService} from '../../events/volume-bar.events.service';
 
 @Component({
@@ -14,6 +14,7 @@ import {VolumeBarEventsService} from '../../events/volume-bar.events.service';
     `]
 })
 export class VolumeBarComponent {
+    @Input() group: string;     // Get Identifier group
     @ViewChild('volumeBarRangeRef') volumeBarRangeRef: ElementRef;
 
     level: number = 0.5;        // level min=0.01 max=1.00
@@ -22,7 +23,7 @@ export class VolumeBarComponent {
     }
 
     updateVolume(): void {
-        this.volumeBarEvents.updateVolumeLevel(this.getVolumeLevel());
+        this.volumeBarEvents.updateVolumeLevel(this.group, this.getVolumeLevel());
     }
 
     getVolumeLevel(): number {
@@ -30,6 +31,6 @@ export class VolumeBarComponent {
     }
 
     toggleMuted() {
-        this.volumeBarEvents.toggleMuted();
+        this.volumeBarEvents.toggleMuted(this.group);
     }
 }

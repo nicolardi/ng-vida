@@ -1,19 +1,20 @@
-import {NgModule} from '@angular/core';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {VideoComponent} from './video.component';
 
-import {ProgressBarComponent} from './components/progressbar.component';
+import {ProgressBarComponent} from './components/progress-bar.component';
 import {PlayPauseComponent} from './components/play-pause.component';
 
 import {MediaEventsService} from '../events/media.events.service';
 import {ButtonEventsService} from '../events/button.events.service';
-import {ProgressBarEventsService} from '../events/progress.bar.events';
+import {ProgressBarEventsService} from '../events/progress-bar.events';
 import {FullScreenEventsService} from '../events/fullscreen.events.service';
 import {FullScreenComponent} from './components/fullscreen.component';
 import {RestartEventsService} from '../events/restart.events.service';
 import {RestartComponent} from './components/restart.component';
 import {VolumeBarEventsService} from '../events/volume-bar.events.service';
 import {VolumeBarComponent} from './components/volume-bar.component';
+import {NgVidaApiService} from '../events/ng-vida.api.service';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import {VolumeBarComponent} from './components/volume-bar.component';
         VolumeBarComponent
     ],
     providers: [
+        NgVidaApiService,
         MediaEventsService,
         ButtonEventsService,
         ProgressBarEventsService,
@@ -46,6 +48,4 @@ import {VolumeBarComponent} from './components/volume-bar.component';
 })
 
 export class VideoModule {
-    constructor() {
-    }
 }

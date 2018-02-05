@@ -22,6 +22,8 @@ import {NgVidaApiService} from '../events/ng-vida.api.service';
     selector: 'vida-video-player',
     template: `
         <video #videoRef id="{{_id}}"
+               [attr.width]="this.options.width"
+               [attr.height]="this.options.height"
                [attr.playsinline]="this.options.playsinline"
                [attr.autoplay]="this.options.autoplay"
                [attr.buffered]="this.options.buffered"
@@ -74,39 +76,36 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     }
 
     ngOnInit() {
-        this.initStateVideoPlayers();
+        
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        console.log('changes:', changes);
         this.mergeOptions();
     }
 
     ngOnDestroy() {
-        this._ngVida.subjects[this.group].play$.unsubscribe();
-        this._ngVida.subjects[this.group].pause$.unsubscribe();
-        // this.progressBarEvents.seek$.unsubscribe();
-        // this.fullScreenEvents.fullScreen$.unsubscribe();
-        this._ngVida.subjects[this.group].restart$.unsubscribe();
+        this._ngVida.getGroup(this.group).play$.unsubscribe();
+        this._ngVida.getGroup(this.group).pause$.unsubscribe();
+        this._ngVida.getGroup(this.group).restart$.unsubscribe();
     }
 
     ngAfterViewInit(): void {
         // Binds the play pressed event
-        this._ngVida.subjects[this.group].play$.subscribe(() => {
+        this._ngVida.getGroup(this.group).play$.subscribe(() => {
             this.videoRef.nativeElement.play();
         });
         // Binds the pause pressed event
-        this._ngVida.subjects[this.group].pause$.subscribe(() => {
+        this._ngVida.getGroup(this.group).pause$.subscribe(() => {
             this.videoRef.nativeElement.pause();
         });
 
-        // // Binds the pause pressed event
-        // this.progressBarEvents.seek$.subscribe((time) => {
-        //     this.videoRef.nativeElement.currentTime =  time;
-        // });
-        //
+        // Binds the pause pressed event
+         this.progressBarEvents.getSeek$(this.group).subscribe((time : number) => {
+             this.videoRef.nativeElement.currentTime =  time;
+         });
+        
         // enter fullScreen
-        this._ngVida.subjects[this.group].fullscreen$.subscribe(() => {
+        this._ngVida.getGroup(this.group).fullscreen$.subscribe(() => {
             let elem = this.videoRef.nativeElement as HTMLVideoElement;
             if (elem.requestFullscreen) {
                 elem.requestFullscreen();
@@ -116,56 +115,43 @@ export class VideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
         });
 
         // reset Time video player
-        this._ngVida.subjects[this.group].restart$.subscribe(() => {
+        this._ngVida.getGroup(this.group).restart$.subscribe(() => {
             this.videoRef.nativeElement.currentTime = 0;
         });
 
         // update Volume
-        this._ngVida.subjects[this.group].volumeLevel$.subscribe((volume: number) => {
+        this._ngVida.getGroup(this.group).volumeLevel$.subscribe((volume: number) => {
             this.videoRef.nativeElement.volume = volume;
         });
 
         // muted
-        this._ngVida.subjects[this.group].muted$.subscribe(() => {
+        this._ngVida.getGroup(this.group).muted$.subscribe(() => {
             (this.videoRef.nativeElement.muted === true) ? this.videoRef.nativeElement.muted = false : this.videoRef.nativeElement.muted = true;
         })
     }
 
 
     onPlay() {
-        console.log(`Play event ${this.group}`);
         this.mediaEvents.notifyPlay(this.group);
     }
 
     onPause() {
-        console.log(`Pause event ${this.group}`);
         this.mediaEvents.notifyPause(this.group);
     }
 
     onError(event: any) {
-        console.log(`Error event ${this.group}`);
         this.mediaEvents.notifyPause(this.group);
     }
 
     onTimeUpdate(event: any) {
-        // console.log(event);
-        //  this.mediaEvents.notifyTimeUpdate(event.target.currentTime);
+       
+        this.mediaEvents.notifyTimeUpdate(this.group, event.target.currentTime);
     }
 
     onLoadedmetadata(event: any) {
-        console.log('Loaded!!');
-        // this.mediaEvents.notifyDuration(event.target.duration);
+        this.mediaEvents.notifyDuration(this.group, event.target.duration);
     }
 
-
-    /**
-     * Init State Video Player/s
-     **/
-    initStateVideoPlayers() {
-        if (!this._ngVida.hasGroup(this.group)) {
-            this._ngVida.createGroup(this.group);
-        }
-    }
 
     /**
      * Merge options with the default ones

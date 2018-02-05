@@ -6,6 +6,8 @@ export interface VideoOptionsModel {
     loop?: string;
     muted?: string;
     preload?: string;
+    width?:number;
+    height?:number;
 }
 
 export const DefaultVideoOptions: VideoOptionsModel = {

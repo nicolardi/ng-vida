@@ -17,27 +17,31 @@ export class MediaEventsService {
     // }
 
     getDuration$(group: string) {
-        return this._ngVidaApi.getGroup(group).duration$.next();
+        return this._ngVidaApi.getGroup(group).duration$;
     }
 
     getTimeUpdate$(group: string) {
-        return this._ngVidaApi.getGroup(group).timeDuration$.next();
+       let g = this._ngVidaApi.getGroup(group);
+        return g.timeUpdate$;
     }
 
 
     notifyPlay(group: string) {
-        this._ngVidaApi.getGroup(group).onPlay$.next();
+        let gr = this._ngVidaApi.getGroup(group); 
+        
+        gr.onPlay$.next();
     }
 
     notifyPause(group: string) {
         this._ngVidaApi.getGroup(group).onPause$.next();
     }
 
-    // notifyDuration(group: string, duration: number) {
-    //     this._ngVidaApi.getSubject(group).duration.next(duration);
-    // }
-    //
-    // notifyTimeUpdate(group: string, currentTime: number) {
-    //     this._ngVidaApi.getSubject(group).timeUpdate.next(currentTime);
-    // }
+    notifyDuration(group: string, duration: number) {
+        
+         this._ngVidaApi.getGroup(group).duration$.next(duration);
+     }
+    
+     notifyTimeUpdate(group: string, currentTime: number) {
+         this._ngVidaApi.getGroup(group).timeUpdate$.next(currentTime);
+     }
 }

@@ -17,7 +17,6 @@ export class ButtonEventsService {
     // }
 
     notifyPlay(group: string) {
-        console.log(this._ngVidaApi.getGroup(group));
         return this._ngVidaApi.getGroup(group).play$.next();
     }
 

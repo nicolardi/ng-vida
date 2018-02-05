@@ -6,6 +6,5 @@ import { Component } from '@angular/core';
 })
 export class AudioComponent {
   constructor() {
-    console.log('My player is working');
   }
 }

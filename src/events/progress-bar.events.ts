@@ -1,16 +1,22 @@
+import { NgVidaApiService } from './ng-vida.api.service';
 import {Subject} from 'rxjs/Subject';
 
 import {Injectable} from '@angular/core';
 
 @Injectable()
 export class ProgressBarEventsService {
-    seek$ = new Subject<number>();
 
-    constructor() {
+    constructor(private _ngVidaApi: NgVidaApiService) {
     }
 
-    seek(currentTime: number) {
-        this.seek$.next(currentTime);
+    getSeek$(group:string)
+    {
+       return this._ngVidaApi.getGroup(group).seek$;
+    }
+
+    seek(group:string, currentTime: number) {
+
+        this._ngVidaApi.getGroup(group).seek$.next(currentTime);
     }
 
 }

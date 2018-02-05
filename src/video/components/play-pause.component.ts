@@ -18,7 +18,7 @@ import {NgVidaApiService} from '../../events/ng-vida.api.service';
     `]
 })
 
-export class PlayPauseComponent implements OnInit {
+export class PlayPauseComponent implements OnInit{
     @Input() group: string;     // Get Identifier group
     state = 'pause';
 
@@ -27,12 +27,13 @@ export class PlayPauseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._ngVidaApi.subjects[this.group].onPlay$
+        let gr = this._ngVidaApi.getGroup(this.group);
+        gr.onPlay$
             .subscribe(() => {
                 this.state = 'play';
             });
-
-        this._ngVidaApi.subjects[this.group].onPause$
+            
+        this._ngVidaApi.getGroup(this.group).onPause$
             .subscribe(() => {
                 this.state = 'pause';
             });
